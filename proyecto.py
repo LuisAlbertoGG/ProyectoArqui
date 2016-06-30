@@ -1,6 +1,5 @@
-
-#!/usr/bin/python
-# -*- coding: latin-1 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
 import sys
 from numpy import *
 # len regresa tamaño de la lista  
@@ -24,8 +23,8 @@ else:
 	nomArchivo = sys.argv[3]
 print 'longitud de memoria: '+longitudDeMemoria 
 print 'nom archivo: '+nomArchivo
-memoria = [None] * longitudDeMemoria
-print memoria[3]
+#memoria = [None] * longitudDeMemoria
+#print memoria[3]
 
 
 #
@@ -37,7 +36,12 @@ def lecturaArchivo (nombreArchivo):
 	#atributoas de el metodo
 	lista =[ ]
 	#abre el archivo 
-	archivo = open(nombreArchivo)
+	try:
+		archivo = open(nombreArchivo)
+		linea = archivo.readline()
+	except Exception :
+		print "error de archivo"
+		sys.exit(1)
 	linea = archivo.readline()
 
 	while linea != '':
@@ -52,6 +56,7 @@ def lecturaArchivo (nombreArchivo):
 
 	
 	temp = quitarBlancos(lista)
+	archivo.close()
 	return temp
 # metodo auxiliar quita espacios en blaco
 # de una lista 
@@ -61,7 +66,7 @@ def quitarBlancos(lista):
 	for l in lista:
 		#print 'l es : '+l
 		if l != "":
-			print l
+			
 			lis.append(l)
 	
 	return lis
@@ -80,28 +85,86 @@ def quitaComentario(l):
 		
 		return lis[0].strip()
 print lecturaArchivo(nomArchivo)
+ 
 
+ 
 def salirVM(num):
-	switcher = {
-        0: print "Ejecución completada exitosamente",
-        1: print "División entre cero",
-        2: print "Dirección de memoria invalida",
-        3: print "La memoria se agotó",
-        4: print "Número de registro inválido",
-        5: print "Operación inválida",
-        6: print "Llamada al sistema inválido",
-        7: print "Error al cargar el archivo",
-        8: print "Argumentos inválidos",
-    }
-    return switcher.get(argument, print "Error al salir")
-    volcar()
 
-volcar
+	if num == 0 :
+		print "Ejecución completada exitosamente"
+	elif num == 1:
+		print "División entre cero"
+	elif num == 2:
+		print "Dirección de memoria invalida"
+	elif num == 3:
+		print "La memoria se agotó"
+	elif num == 4:
+		print "Número de registro inválido"
+	elif num == 5:
+		print "Operación inválida"
+	elif num == 6:
+		print "Llamada al sistema inválido"
+	elif num == 7:
+		print "Error al cargar el archivo"
+	elif num == 8:
+		print "Argumentos inválidos"
+	else:
+		print "error al salir"
+
+#lee la posicion de  de el un arreglo 
+# aplica la opcion que se
+def syscall(num):
+	 # lee de terminal y lo guarda en la la posicion de el arreglo
+	 #un tipo entero
+	if num == 0:
+		a = int(raw_input())
+		r[10]= a
+	#leee de terminal y lo guarda en la posicion de el arreglo
+	# un tipo de caracter el primero de la cadena 
+	elif num == 1:
+		b = raw_input()
+		r[10] = b[0]
+	#lee de terminal y lo guarda en la posicion de el arreglo 
+	# un tipo flotante
+	elif num == 2:
+		c = float(raw_input())
+		r[10] = c
+	#lee de terminal y lo guarda en la posicion de el arreglo 
+	# un tipo cadena
+ 	elif num == 3:
+ 		d = raw_input()
+ 		r[10] = d
+ 	 # muestra en la terminal 
+	 #un tipo entero
+	elif num == 4:
+		print r[9]
+	# muestra en la terminal 
+	# un tipo de caracter el primero de la cadena
+	elif num == 5:
+		print r[9]
+	#lee de terminal y lo guarda en la posicion de el arreglo 
+	# un tipo flotante
+	elif num == 6 :
+		print r[9]
+	#imprime la cadena 
+	elif num == 7:
+		print r[9]
+		#sale de es sistema 
+	elif num == 8:
+		salirVM(0)
+	else:
+		print "error"
+
+#crea un archivo error.txt que contienen 
+# un texto  que se pasa por parametros 
+def volcado(error):
+
+    archi=open('error.txt','w') # crear el archivo 
+    archi=open('datos.txt','a') # lo abre 
+    archi.write(error) # escribe en el archivo 
+    archi.close() #cierra el archivo
 
 
-
-
-	
 
 
 
