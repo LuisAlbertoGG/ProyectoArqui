@@ -56,6 +56,7 @@ def quitarBlancos(lista):
 		if l != "":
 			print l
 			print len(l)
+			memoriaCadena += len(l)
 			lis.append(l)
 
 	
