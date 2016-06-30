@@ -1,16 +1,12 @@
-# Práctica introducción al MIPS
-# Juan A. Gómez Pulido. UEX. 1999
-	.data # *** SEGMENTO DE DATOS ***
-valor: .word 8,9,10,11 				# Defino array 4 palabras (decimal)											# valores[2] es 10 = 0xa
-.byte 0x1a,0x0b,10 					# Defino los 3 primeros bytes de la
-									# siguiente palabra (hex. y dec.).
-.align 2 							# Para que el siguient	e dato en mem.
-									# esté alineado en palabra
-.ascii "Hola" 						# Cadena de caracteres
-.asciiz",MIPS" 						# Cadena de caracteres terminada
-									# con el caracter nulo.
-.align 2 							# Las dos cadenas anteriores, junto
-									# con el NULL final, ocupan 10 bytes,
-									# por lo que alineo el siguiente dato
-									# para que empieze en una palabra
-id: .word 1							# Usado como índice del array "valor"
+;btest
+.text
+main:                         ; Inicia el codigo del programa
+
+li $r0, label0                ; r0=<posicion de label0>
+li $r1, 4
+
+label0: 
+sub $sp, $sp, $r1
+sw $sp, $r1
+b $r0                      ; ir a label0
+
