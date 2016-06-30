@@ -13,20 +13,20 @@ def operacion3 (op, a1, a2, a3):
 		float(a2)
 		float(a3)
 		a1 = a2 - a3
-  elif(op == 'and'):
-    a1 = a2 and a3
-  elif(op == 'or'):
-    a1 = a2 or a3
+	elif(op == 'and'):
+		a1 = a2 and a3
+	elif(op == 'or'):
+		a1 = a2 or a3
 	elif(op == 'xor'):
 		a1 = (a2 and a3) or (not(a2) and not(a3))
 	elif(op == 'lb'):
-    a1 = memoria[a2 + a3]
-  elif(op == 'lw'):
-    a1 = memoria[a2 + a3]
-  elif(op == 'sb'):
-    memoria[a2 + a3] = a1
-  elif(op == 'sw'):
-    memoria[a2 + a3] = a1
+		a1 = memoria[a2 + a3]
+	elif(op == 'lw'):
+		a1 = memoria[a2 + a3]
+	elif(op == 'sb'):
+		memoria[a2 + a3] = a1
+	elif(op == 'sw'):
+		memoria[a2 + a3] = a1
 
 def operacion2(op, a1, a2):
   if(op == 'mult'):
