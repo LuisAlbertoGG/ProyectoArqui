@@ -21,7 +21,7 @@ if len( sys.argv ) != 4:
 else:
 	longitudDeMemoria = sys.argv[2]
 	nomArchivo = sys.argv[3]
-print 'longitud de memoria: '+longitudDeMemoria 
+print 'longitud de memoria: ' + longitudDeMemoria 
 print 'nom archivo: '+nomArchivo
 #memoria = [None] * longitudDeMemoria
 #print memoria[3]
@@ -57,7 +57,16 @@ def lecturaArchivo (nombreArchivo):
 	
 	temp = quitarBlancos(lista)
 	archivo.close()
-	return temp
+	temp1 = divide(temp)
+	return temp1
+
+#metodo auxiliar que divide cada renglon
+def divide (lista):
+	lis = [[]]
+	for x in range(0, len(lista)):
+		lis[x[]] = lista[x].split()
+
+
 # metodo auxiliar quita espacios en blaco
 # de una lista 
 
@@ -77,9 +86,9 @@ def quitaComentario(l):
 	
 	l.strip() # quita tabulaciones y espacios en blanco
 	
-	lis = l.split("#") 
+	lis = l.split(";") 
 	#print lis[1]
-	if lis[0].find("#")>0:
+	if lis[0].find(";")>0:
 		l=[]
 	else:
 		
@@ -163,6 +172,8 @@ def volcado(error):
     archi=open('datos.txt','a') # lo abre 
     archi.write(error) # escribe en el archivo 
     archi.close() #cierra el archivo
+
+
 
 
 

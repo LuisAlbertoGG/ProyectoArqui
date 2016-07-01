@@ -1,0 +1,4 @@
+
+li $r0, 4	;dasd
+
+li $r1, 5	;sadas
