@@ -164,7 +164,7 @@ def syscall(num):
 	else:
 		print "error"
 
-# crear la matriz 
+# crear la matriz nula 
 # de 5 x n  
 # 5 por el nmero de columnoas y 
 # n el numero de lineas
@@ -178,6 +178,8 @@ def crearMatriz(n):
 		matriz.append(a)
 	return matriz
 
+
+
 # muestra una matriz 
 def mostarMatriz(M):
 	for i in range(len(M)):
@@ -187,7 +189,12 @@ def mostarMatriz(M):
  		print ']'
 
 # llenar la matris con una lista 
-# cada fila es una linea de codigo 
+# cada fila es una linea de codigo y las columnas
+# son los espacios de una instruccion 
+
+def llenarMatris(lista):
+	
+
 
 #crea un archivo error.txt que contienen 
 # un texto  que se pasa por parametros 
