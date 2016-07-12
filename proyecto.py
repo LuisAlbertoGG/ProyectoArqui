@@ -96,7 +96,7 @@ def quitaComentario(l):
 print lecturaArchivo(nomArchivo)
  
 
- 
+
 def salirVM(num):
 
 	if num == 0 :
@@ -163,6 +163,31 @@ def syscall(num):
 		salirVM(0)
 	else:
 		print "error"
+
+# crear la matriz 
+# de 5 x n  
+# 5 por el nmero de columnoas y 
+# n el numero de lineas
+
+def crearMatriz(n):
+	filas  =n  
+	columnas= 5 
+	matriz = []
+ 	for i in range(filas):
+ 		a = ['']*columnas
+		matriz.append(a)
+	return matriz
+
+# muestra una matriz 
+def mostarMatriz(M):
+	for i in range(len(M)):
+ 		print '[',
+ 		for j in range(len(M[i])):
+ 			print '{:>3s}'.format(str(M[i][j])),
+ 		print ']'
+
+# llenar la matris con una lista 
+# cada fila es una linea de codigo 
 
 #crea un archivo error.txt que contienen 
 # un texto  que se pasa por parametros 
