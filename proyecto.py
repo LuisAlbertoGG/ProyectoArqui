@@ -1,9 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
+#!/usr/bin/env python -W ignore::VisibleDeprecationWarning
+import warnings
 import sys
 from numpy import *
+
+
+def fxn():
+    warnings.warn("deprecated", DeprecationWarning)
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    fxn()
+
 # len regresa tamaño de la lista  
 # parametroo una lista 
+mem = array([0,0,0,6,7,0,0,0,0,0,0,0,0,0])
+ciclos = 0
 r = array([0,0,0,0,0,0,0,0])		
 a = array([0,0])
 s = 0
@@ -97,9 +110,28 @@ def quitaComentario(l):
 	else:
 		
 		return lis[0].strip()
-print lecturaArchivo(nomArchivo)
- 
 
+resultado = lecturaArchivo(nomArchivo)
+
+
+def ejecutar(matriz):
+	i = 0
+	while(i < len(matriz)):
+		op(matriz[i], ciclos)
+		i = i+1
+ 
+def op(array, cicloss):
+	if(array[0] == 'add'):
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])	
+		mem[a] = mem[b] + mem[c]
+		cicloss = cicloss + 3
+	else:
+		print array[0]
+
+ejecutar(resultado)
+print "El resultado es " , mem[1]
 
 def salirVM(num):
 
