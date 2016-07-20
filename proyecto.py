@@ -57,9 +57,19 @@ def lecturaArchivo (nombreArchivo):
 	
 	temp = quitarBlancos(lista)
 	archivo.close()
-	return temp
+	t =divide(temp)
+	return t
 
-
+# divide la lista
+#metodo auxiliar que divide cada renglon
+def divide (lista):
+	lis = []
+	i =0
+	for x in range(0, len(lista)):
+		i = i+1
+		e =lista[x].split()
+		lis.append(e)
+	return lis
 
 # metodo auxiliar quita espacios en blaco
 # de una lista 
