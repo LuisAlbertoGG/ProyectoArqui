@@ -57,14 +57,9 @@ def lecturaArchivo (nombreArchivo):
 	
 	temp = quitarBlancos(lista)
 	archivo.close()
-	temp1 = divide(temp)
-	return temp1
+	
+	return temp
 
-#metodo auxiliar que divide cada renglon
-def divide (lista):
-	lis = [[]]
-	for x in range(0, len(lista)):
-		lis[x[]] = lista[x].split()
 
 
 # metodo auxiliar quita espacios en blaco
@@ -192,7 +187,7 @@ def mostarMatriz(M):
 # cada fila es una linea de codigo y las columnas
 # son los espacios de una instruccion 
 
-def llenarMatris(lista):
+#def llenarMatris(lista):
 	
 
 
