@@ -57,7 +57,6 @@ def lecturaArchivo (nombreArchivo):
 	
 	temp = quitarBlancos(lista)
 	archivo.close()
-	
 	return temp
 
 
