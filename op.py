@@ -15,7 +15,16 @@ operacion = array(["add", "sub", "mul", "div", "fadd", "fsub", "fmul", "fdiv", "
 opHex = array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", 10, 11, 12, 13, 14])
 
 
-def op(array):
+def quitaCaract(pal):
+	w = ""
+	for c in pal:
+		if (c != "$" or c != "r"):
+			w.append(c)
+	return w
+
+
+#Faltaron lb, lw, sb, sw
+def op(array, matrizCompleta):
 	if(array[0] == 'add'):
 		a = quitaCaract(array[1])
 		b = quitaCaract(array[2])
@@ -94,8 +103,52 @@ def op(array):
 		c = quitaCaract(array[3])
 		r[a] = (r[b] and r[c]) or (not(r[b]) and not(r[3]))
 		ciclos += 1
-	elif(array[0] == 'not')
+	elif(array[0] == 'not'):
 		a = quitaCaract(array[1])
 		b = quitaCaract(array[2])
 		r[a] = not(r[b])
 		ciclos += 1
+	elif(array[0] == 'li')
+		a = quitaCaract(array[1])
+		r[a] = array[2] << 16
+		r[a] = r[a] or array[2] << 32
+		ciclos += 1500
+	elif(array[0] == 'b'):
+		a = busca(array, array[1])
+		ejecuta(matrix, a)
+		ciclos += 1
+	elif(array[0] == 'beqz'):
+		a = quitaCaract(array[1])
+		b = busca(array, array[2])
+		if(a == 0):
+			ejecuta(matrix, b)
+		ciclos += 4
+	elif(array[0] == 'bltz'):
+		a = quitaCaract(array[1])
+		b = busca(array, array[2])
+		if(a < 0):
+			ejecuta(matrix, b)
+		ciclos += 5
+		
+#Quita los dos puntos		
+def quitaPuntos(wo):
+	w = ""
+	for c in wo:
+		if (c != ":"):
+			w.append(c)
+	return w
+	
+#Regresa el indice del renglón+1 donde esta la palabra buscada
+def busca(array, palabra):
+	for i in (0,3):
+		for j in i:
+			sin = quitaPuntos(j)
+			if(sin == palabra):
+				return j+1
+				
+#Ejecuta a partir de un renglon
+def ejecuta(matriz, index):
+	for list in (0,3):
+		for l in list:
+			if(list > index):
+				op(list)
