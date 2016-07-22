@@ -26,16 +26,13 @@ pc = 0
 #operacion = array(["add", "sub", "mul", "div", "fadd", "fsub", "fmul", "fdiv", "and", "or", "xor", "not", "lb", "lw", "sb", "sw", "li", "b", "beqz", "bltz", "syscall"])
 #opHex = array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", 10, 11, 12, 13, 14])
 longitudDeMemoria =0
+memoriaUsada = 0
 nomArchivo = '' 
-print len( sys.argv )
-print sys.argv
 if len( sys.argv ) != 4:
 	print 'faltan argumentos '
 else:
 	longitudDeMemoria = sys.argv[2]
 	nomArchivo = sys.argv[3]
-print 'longitud de memoria: ' + longitudDeMemoria 
-print 'nom archivo: '+nomArchivo
 #memoria = [None] * longitudDeMemoria
 #print memoria[3]
 
@@ -114,6 +111,8 @@ def quitaComentario(l):
 
 
 def ejecutar(matriz):
+	if(int(memoriaUsada) > int(longitudDeMemoria)):
+		salirVM(3)
 	i = 1
 	while(i < len(matriz)):
 		if(":" in matriz[i][0]):
@@ -124,39 +123,51 @@ def ejecutar(matriz):
 
 
 def salirVM(num):
-
+	global pc
 	if num == 0 :
-		print "Ejecución completada exitosamente"
+		a = "Ejecución completada exitosamente"
+		pc = pc + 50
+		print pc
 		sys.exit()
 	elif num == 1:
-		print "División entre cero"
+		a = "División entre cero"
+		volcado(a)
 		sys.exit()
 	elif num == 2:
-		print "Dirección de memoria invalida"
+		a = "Dirección de memoria invalida"
+		volcado(a)
 		sys.exit()
 	elif num == 3:
-		print "La memoria se agotó"
+		a = "La memoria se agotó"
+		volcado(a)
 		sys.exit()
 	elif num == 4:
-		print "Número de registro inválido"
+		a = "Número de registro inválido"
+		volcado(a)
 		sys.exit()
 	elif num == 5:
-		print "Operación inválida"
+		a = "Operación inválida"
+		volcado(a)
 		sys.exit()
 	elif num == 6:
-		print "Llamada al sistema inválido"
+		a = "Llamada al sistema inválido"
+		volcado(a)
 		sys.exit()
 	elif num == 7:
-		print "Error al cargar el archivo"
+		a = "Error al cargar el archivo"
+		volcado(a)
 		sys.exit()
 	elif num == 8:
-		print "Argumentos inválidos"
+		a = "Argumentos inválidos"
+		volcado(a)
 		sys.exit()
 	elif num == 9:
-		print "Error de sintaxis"
+		a = "Error de sintaxis"
+		volcado(a)
 		sys.exit()
 	else:
-		print "error al salir"
+		print "Error al salir"
+		volcado(a)
 		sys.exit()
 
 #lee la posicion de  de el un arreglo 
@@ -201,7 +212,7 @@ def syscall():
 	elif mem[8] == '8':
 		salirVM(0)
 	else:		
-		print "error"
+		salirVM(6)
 
 # crear la matriz nula 
 # de 5 x n  
@@ -241,10 +252,12 @@ def volcado(error):
 
     archi=open('error.txt','w') # crear el archivo 
     archi=open('error.txt','a') # lo abre 
-    archi.write(error) # escribe en el archivo 
+    archi.write(error+"\n") # escribe en el archivo 
     i = 0
     while(i < len(mem)):
-    	archi.write("Memoria[",i,"] = ", mem[i])
+    	a = "Memoria["+str(i)+"] = "+str(mem[i])+"\n"
+    	archi.write(a)
+    	i = i + 1
     archi.close() #cierra el archivo
 
     def quitaCaract(pal):
@@ -409,10 +422,11 @@ def op(array, matrizCompleta):
 		pc = pc + 5
 	elif(array[0] == '14'):
 		syscall()
+		pc = pc + 50
 	elif(array[0] == '15'):
 		i = len(array)
-		e = 1
-		s = ''
+		e = 2
+		s = array[1]
 		while(e<i-1):
 			s = s + " " + array[e]
 			e = e + 1
@@ -585,12 +599,14 @@ def prepararaux(renglon):
 
 #Mé
 def preparar(matriz):
+	global memoriaUsada
+	global longitudDeMemoria
 	i = 0
 	while(i < len(matriz)):
 		if(matriz[0][0] != ".text"):
 			salirVM(9)
 		matriz[i] = prepararaux(matriz[i])
-		print matriz[i]
+		memoriaUsada = memoriaUsada + (len(matriz[i]))
 		i = i+1
 	return matriz
 

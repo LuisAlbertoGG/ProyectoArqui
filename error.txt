@@ -1,0 +1,15 @@
+Llamada al sistema inválido
+Memoria[0] = 
+Memoria[1] = 
+Memoria[2] = 
+Memoria[3] = 
+Memoria[4] = 7
+Memoria[5] = 
+Memoria[6] = 
+Memoria[7] = 
+Memoria[8] = 11
+Memoria[9] = hola mundo
+Memoria[10] = 
+Memoria[11] = 
+Memoria[12] = 
+Memoria[13] = 
