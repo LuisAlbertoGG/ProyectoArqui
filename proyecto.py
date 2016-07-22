@@ -15,8 +15,7 @@ with warnings.catch_warnings():
 
 # len regresa tamaño de la lista  
 # parametroo una lista 
-mem = array([0,0,0,6,7,0,0,0,0,0,0,0,0,0])
-ciclos = 0
+mem = array([0,0,0,0,0,0,0,0,0,0,0,0,0,0])
 r = array([0,0,0,0,0,0,0,0])		
 a = array([0,0])
 s = 0
@@ -111,27 +110,14 @@ def quitaComentario(l):
 		
 		return lis[0].strip()
 
-resultado = lecturaArchivo(nomArchivo)
-
 
 def ejecutar(matriz):
 	i = 0
 	while(i < len(matriz)):
-		op(matriz[i], ciclos)
+		op(matriz[i], matriz)
 		i = i+1
- 
-def op(array, cicloss):
-	if(array[0] == 'add'):
-		a = int(array[1])
-		b = int(array[2])
-		c = int(array[3])	
-		mem[a] = mem[b] + mem[c]
-		cicloss = cicloss + 3
-	else:
-		print array[0]
 
-ejecutar(resultado)
-print "El resultado es " , mem[1]
+
 
 def salirVM(num):
 
@@ -241,7 +227,328 @@ def volcado(error):
     archi.write(error) # escribe en el archivo 
     archi.close() #cierra el archivo
 
+    def quitaCaract(pal):
+	w = ""
+	for c in pal:
+		if (c != "$" or c != "r"):
+			w.append(c)
+	return w
 
+def quitaCaract(pal):
+	#w = ""
+	#for c in pal:
+	#	if (c != "$" or c != "r"):
+	#		w+=str(c)
+	#return w
+	pal = pal.translate(None, ',$')
+	return pal
+
+
+#Faltaron lb, lw, sb, sw
+def op(array, matrizCompleta):
+	global pc
+	if(array[0] == '0'):
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		mem[a] = mem[b] + mem[c]
+		pc = pc + 3
+	elif(array[0] == 'sub'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		r[a] = r[b] - r[c]
+		pc = pc + 4
+	elif(array[0] == 'mul'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		r[a] = r[b] * r[c]
+		pc = pc + 10
+	elif(array[0] == 'div'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		r[a] = r[b] / r[c]
+		pc = pc + 11
+	elif(r[0] == 'fadd'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		float(r[a])
+		float(r[b])
+		float(r[c])
+		r[a] = r[b] + r[c]
+		pc = pc + 4
+	elif(r[0] == 'fsub'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		float(r[a])
+		float(r[b])
+		float(r[c])
+		r[a] = r[b] - r[c]
+		pc = pc + 5
+	elif(array[0] == 'fmul'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		float(r[a])
+		float(r[b])
+		float(r[c])
+		r[a] = r[b] * r[c]
+		pc = pc + 9
+	elif(array[0] == 'fdiv'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		float(r[a])
+		float(r[b])
+		float(r[c])
+		r[a] = r[b] / r[c]
+		pc = pc + 10
+	elif(array[0] == 'and'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		r[a] = r[b] and r[c]
+		pc = pc + 1
+	elif(array[0] == 'or'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		r[a] = r[b] or r[c]
+		pc = pc + 1
+	elif(array[0] == 'xor'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		c = int(quitaCaract(array[3]))
+		r[a] = (r[b] and r[c]) or (not(r[b]) and not(r[3]))
+		pc = pc + 1
+	elif(array[0] == 'not'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		r[a] = not(r[b])
+		pc = pc + 1
+	elif(array[0] == '10'):
+		a = int(array[1])
+		mem[a] = int(array[2]) #<< 16
+		#r[a] = r[a] or array[2] #<< 32
+		pc = pc + 1500
+	elif(array[0] == 'b'):
+		a = busca(array, array[1])
+		ejecuta(matrix, a)
+		pc = pc + 1
+	elif(array[0] == 'beqz'):
+		a = int(quitaCaract(array[1]))
+		b = int(busca(array, array[2]))
+		if(a == 0):
+			ejecuta(matrix, b)
+		pc = pc + 4
+	elif(array[0] == 'bltz'):
+		a = int(quitaCaract(array[1]))
+		b = busca(array, array[2])
+		if(a < 0):
+			ejecuta(matrix, b)
+		pc = pc + 5
+	elif(array[0] == 'syscall'):
+		syscall()
+		
+#Quita los dos puntos		
+def quitaPuntos(wo):
+	w = ""
+	for c in wo:
+		if (c != ":"):
+			w.append(c)
+	return w
+	
+#Regresa el indice del renglón+1 donde esta la palabra buscada
+def busca(array, palabra):
+	for i in (0,3):
+		for j in i:
+			sin = quitaPuntos(j)
+			if(sin == palabra):
+				return j+1
+				
+#Ejecuta a partir de un renglon
+def ejecuta(matriz, index):
+	for list in (0,3):
+		for l in list:
+			if(list > index):
+				op(list)
+
+
+def prepararaux(renglon):
+	if(renglon[0] == 'add'):
+		renglon[0] = '0'
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
+		return renglon
+	elif(renglon[0] == 'sub'):
+		renglon[0] = '1'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'mul'):
+		renglon[0] = '2'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'div'):
+		renglon[0] = '3'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'fadd'):
+		renglon[0] = '4'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'fsub'):
+		renglon[0] = '5'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'fmul'):
+		renglon[0] = '6'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'fdiv'):
+		renglon[0] = '7'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'and'):
+		renglon[0] = '8'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'or'):
+		renglon[0] = '9'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'xor'):
+		renglon[0] = 'A'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'not'):
+		renglon[0] = 'B'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'lb'):
+		renglon[0] = 'C'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'lw'):
+		renglon[0] = 'D'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'sb'):
+		renglon[0] = 'E'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'sw'):
+		renglon[0] = 'F'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'li'):
+		renglon[0] = '10'
+		renglon[1] = corres(renglon[1])
+		return renglon
+	elif(renglon[0] == 'b'):
+		renglon[0] = '11'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'beqz'):
+		renglon[0] = '12'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'bltz'):
+		renglon[0] = '13'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	elif(renglon[0] == 'syscall'):
+		renglon[0] = '14'
+		renglon[1] = corres[1]
+		renglon[2] = corres[2]
+		renglon[3] = corres[3]
+		return renglon
+	else:
+		salirVM(5)
+
+def preparar(matriz):
+	i = 0
+	while(i < len(matriz)):
+		matriz[i] = prepararaux(matriz[i])
+		i = i+1
+	return matriz
+
+def corres(direccion):
+	a = quitaCaract(direccion)
+	if(a == 'r0'):
+		return '0'
+	elif(a == 'r1'):
+		return '1'
+	elif(a == 'r2'):
+		return '2'
+	elif(a == 'r3'):
+		return '3'
+	elif(a == 'r4'):
+		return '4'
+	elif(a == 'r5'):
+		return '5'
+	elif(a == 'r6'):
+		return '6'
+	elif(a == 'r7'):
+		return '7'
+	elif(a == 'a0'):
+		return '8'
+	elif(a == 'a1'):
+		return '9'
+	elif(a == 's0'):
+		return '10'
+	elif(a == 'ra'):
+		return '11'
+	else:
+		salirVM(2)
+
+
+
+resultado = lecturaArchivo(nomArchivo)
+resultado1 = preparar(resultado)
+ejecutar(resultado1)
+print "El resultado es " , mem[1]
+print "Tardo en ciclos ", pc
 
 
 
