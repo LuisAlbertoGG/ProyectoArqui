@@ -3,7 +3,7 @@
 #!/usr/bin/env python -W ignore::VisibleDeprecationWarning
 import warnings
 import sys
-from numpy import *
+#from numpy import *
 
 
 def fxn():
@@ -15,15 +15,16 @@ with warnings.catch_warnings():
 
 # len regresa tamaño de la lista  
 # parametroo una lista 
-mem = array([0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-r = array([0,0,0,0,0,0,0,0])		
-a = array([0,0])
-s = 0
-ra = 0
+mem = ["","","","","","","","","","","","","",""]
+diccionario = {}
+#r = array([0,0,0,0,0,0,0,0])		
+#a = array([0,0])
+#s = 0
+#ra = 0
 pc = 0
-sp = 0
-operacion = array(["add", "sub", "mul", "div", "fadd", "fsub", "fmul", "fdiv", "and", "or", "xor", "not", "lb", "lw", "sb", "sw", "li", "b", "beqz", "bltz", "syscall"])
-opHex = array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", 10, 11, 12, 13, 14])
+#sp = 0
+#operacion = array(["add", "sub", "mul", "div", "fadd", "fsub", "fmul", "fdiv", "and", "or", "xor", "not", "lb", "lw", "sb", "sw", "li", "b", "beqz", "bltz", "syscall"])
+#opHex = array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F", 10, 11, 12, 13, 14])
 longitudDeMemoria =0
 nomArchivo = '' 
 print len( sys.argv )
@@ -54,7 +55,8 @@ def lecturaArchivo (nombreArchivo):
 	except Exception :
 		print "error de archivo"
 		sys.exit(1)
-	linea = archivo.readline()
+	
+	
 
 	while linea != '':
 		
@@ -112,8 +114,10 @@ def quitaComentario(l):
 
 
 def ejecutar(matriz):
-	i = 0
+	i = 1
 	while(i < len(matriz)):
+		if(":" in matriz[i][0]):
+			break
 		op(matriz[i], matriz)
 		i = i+1
 
@@ -148,52 +152,55 @@ def salirVM(num):
 	elif num == 8:
 		print "Argumentos inválidos"
 		sys.exit()
+	elif num == 9:
+		print "Error de sintaxis"
+		sys.exit()
 	else:
 		print "error al salir"
 		sys.exit()
 
 #lee la posicion de  de el un arreglo 
 # aplica la opcion que se
-def syscall(num):
+def syscall():
 	 # lee de terminal y lo guarda en la la posicion de el arreglo
 	 #un tipo entero
-	if num == 0:
+	if mem[8] == '0':
 		a = int(raw_input())
-		r[10]= a
+		mem[10]= a
 	#leee de terminal y lo guarda en la posicion de el arreglo
 	# un tipo de caracter el primero de la cadena 
-	elif num == 1:
+	elif mem[8] == '1':
 		b = raw_input()
-		r[10] = b[0]
+		mem[10] = b[0]
 	#lee de terminal y lo guarda en la posicion de el arreglo 
 	# un tipo flotante
-	elif num == 2:
+	elif mem[8] == '2':
 		c = float(raw_input())
-		r[10] = c
+		mem[10] = c
 	#lee de terminal y lo guarda en la posicion de el arreglo 
 	# un tipo cadena
- 	elif num == 3:
+ 	elif mem[8] == '3':
  		d = raw_input()
- 		r[10] = d
+ 		mem[10] = d
  	 # muestra en la terminal 
 	 #un tipo entero
-	elif num == 4:
-		print r[9]
+	elif mem[8] == '4':
+		print mem[9]
 	# muestra en la terminal 
 	# un tipo de caracter el primero de la cadena
-	elif num == 5:
-		print r[9]
+	elif mem[8] == '5':
+		print mem[9]
 	#lee de terminal y lo guarda en la posicion de el arreglo 
 	# un tipo flotante
-	elif num == 6 :
-		print r[9]
+	elif mem[8] == '6' :
+		print mem[9]
 	#imprime la cadena 
-	elif num == 7:
-		print r[9]
+	elif mem[8] == '7':
+		print mem[9]
 		#sale de es sistema 
-	elif num == 8:
+	elif mem[8] == '8':
 		salirVM(0)
-	else:
+	else:		
 		print "error"
 
 # crear la matriz nula 
@@ -233,8 +240,11 @@ def mostarMatriz(M):
 def volcado(error):
 
     archi=open('error.txt','w') # crear el archivo 
-    archi=open('datos.txt','a') # lo abre 
+    archi=open('error.txt','a') # lo abre 
     archi.write(error) # escribe en el archivo 
+    i = 0
+    while(i < len(mem)):
+    	archi.write("Memoria[",i,"] = ", mem[i])
     archi.close() #cierra el archivo
 
     def quitaCaract(pal):
@@ -253,6 +263,13 @@ def quitaCaract(pal):
 	pal = pal.translate(None, ',$')
 	return pal
 
+def esNum(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
 
 #Faltaron lb, lw, sb, sw
 def op(array, matrizCompleta):
@@ -263,149 +280,186 @@ def op(array, matrizCompleta):
 		c = int(array[3])
 		mem[a] = mem[b] + mem[c]
 		pc = pc + 3
-	elif(array[0] == '1'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		r[a] = r[b] - r[c]
+	elif(array[0] == '1'): 
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		mem[a] = mem[b] - mem[c]
 		pc = pc + 4
 	elif(array[0] == '2'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		r[a] = r[b] * r[c]
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		mem[a] = mem[b] * mem[c]
 		pc = pc + 10
 	elif(array[0] == '3'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		r[a] = r[b] / r[c]
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		if(mem[c] != 0):
+			mem[a] = mem[b] / mem[c]
+		else:
+			salirVM(1)
 		pc = pc + 11
 	elif(array[0] == '4'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		float(r[a])
-		float(r[b])
-		float(r[c])
-		r[a] = r[b] + r[c]
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		float(mem[a])
+		float(mem[b])
+		float(mem[c])
+		mem[a] = mem[b] + mem[c]
 		pc = pc + 4
 	elif(array[0] == '5'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		float(r[a])
-		float(r[b])
-		float(r[c])
-		r[a] = r[b] - r[c]
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		float(mem[a])
+		float(mem[b])
+		float(mem[c])
+		mem[a] = mem[b] - mem[c]
 		pc = pc + 5
 	elif(array[0] == '6'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		float(r[a])
-		float(r[b])
-		float(r[c])
-		r[a] = r[b] * r[c]
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		float(mem[a])
+		float(mem[b])
+		float(mem[c])
+		mem[a] = mem[b] * mem[c]
 		pc = pc + 9
 	elif(array[0] == '7'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		float(r[a])
-		float(r[b])
-		float(r[c])
-		r[a] = r[b] / r[c]
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		float(mem[a])
+		float(mem[b])
+		float(mem[c])
+		mem[a] = mem[b] / mem[c]
 		pc = pc + 10
 	elif(array[0] == '8'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		r[a] = r[b] and r[c]
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		mem[a] = mem[b] and mem[c]
 		pc = pc + 1
 	elif(array[0] == '9'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		r[a] = r[b] or r[c]
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		mem[a] = mem[b] or mem[c]
 		pc = pc + 1
 	elif(array[0] == 'A'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		c = int(quitaCaract(array[3]))
-		r[a] = (r[b] and r[c]) or (not(r[b]) and not(r[3]))
+		a = int(array[1])
+		b = int(array[2])
+		c = int(array[3])
+		mem[a] = (mem[b] and mem[c]) or (not(mem[b]) and not(mem[3]))
 		pc = pc + 1
 	elif(array[0] == 'B'):
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		r[a] = not(r[b])
+		a = int(array[1])
+		b = int(array[2])
+		mem[a] = not(mem[b])
 		pc = pc + 1
 	elif(array[0] == 'C'):#no terminada
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		r[a] = not(r[b])
+		a = int(array[1])
+		b = int(array[2])
+		mem[a] = not(mem[b])
 		pc = pc + 1
 	elif(array[0] == 'D'):#no terminada
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		r[a] = not(r[b])
+		a = int(array[1])
+		b = int(array[2])
+		mem[a] = not(mem[b])
 		pc = pc + 1
 	elif(array[0] == 'E'):#no terminada
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		r[a] = not(r[b])
+		a = int(array[1])
+		b = int(array[2])
+		mem[a] = not(mem[b])
 		pc = pc + 1
 	elif(array[0] == 'F'):#no terminada
-		a = int(quitaCaract(array[1]))
-		b = int(quitaCaract(array[2]))
-		r[a] = not(r[b])
+		a = int(array[1])
+		b = int(array[2])
+		mem[a] = not(mem[b])
 		pc = pc + 1
 	elif(array[0] == '10'):
 		a = int(array[1])
-		mem[a] = int(array[2]) #<< 16
-		#r[a] = r[a] or array[2] #<< 32
+		if("$" in array[2]):
+			b = quitaCaract(array[2])
+			b = int(corres(b))
+			mem[a] = mem[b]
+		elif(not esNum(array[2])):
+			mem[a] = diccionario[array[2]]
+		else:
+			mem[a] = (array[2])
 		pc = pc + 1500
 	elif(array[0] == '11'):
-		a = busca(array, array[1])
-		ejecuta(matrix, a)
+		a = busca(matrizCompleta, array[1])
+		ejecuta(matrizCompleta, a)
 		pc = pc + 1
 	elif(array[0] == '12'):
-		a = int(quitaCaract(array[1]))
+		a = int(array[1])
 		b = int(busca(array, array[2]))
-		if(a == 0):
-			ejecuta(matrix, b)
+		if(mem[a] == 0):
+			ejecuta(matrizCompleta, b)
 		pc = pc + 4
 	elif(array[0] == '13'):
-		a = int(quitaCaract(array[1]))
+		a = int(array[1])
 		b = busca(array, array[2])
-		if(a < 0):
-			ejecuta(matrix, b)
+		if(mem[a] < 0):
+			ejecuta(matrizCompleta, b)
 		pc = pc + 5
 	elif(array[0] == '14'):
 		syscall()
+	elif(array[0] == '15'):
+		i = len(array)
+		e = 1
+		s = ''
+		while(e<i-1):
+			s = s + " " + array[e]
+			e = e + 1
+		diccionario[array[i-1]] = s
+	else:
+		print array[0]
+		salirVM(5)
 		
 #Quita los dos puntos		
 def quitaPuntos(wo):
-	w = ""
-	for c in wo:
-		if (c != ":"):
-			w.append(c)
-	return w
+	#w = ""
+	#for c in wo:
+	#	if (c != ":"):
+	#		w.append(c)
+	#return w
+	#wo = wo.translate(None, ':')
+	wo = wo+":"
+	return wo
 	
 #Regresa el indice del renglón+1 donde esta la palabra buscada
-def busca(array, palabra):
-	for i in (0,3):
-		for j in i:
-			sin = quitaPuntos(j)
-			if(sin == palabra):
-				return j+1
+def busca(matriz, palabra):
+	i = 0
+	palabra = quitaPuntos(palabra)
+	while(i < len(matriz)):
+		if(matriz[i][0] == palabra):
+			return i+1
+		i = i + 1
+	salirVM(8)
+	#for i in (0,3):
+	#	for j in i:
+	#		sin = quitaPuntos(j)
+	#		if(sin == palabra):
+	#			return j+1
 				
 #Ejecuta a partir de un renglon
-def ejecuta(matriz, index):
-	for list in (0,3):
-		for l in list:
-			if(list > index):
-				op(list)
+def ejecuta(matriz, index):	
+	i = index
+	while(i < len(matriz)):
+		if(":" in matriz[i][0]):
+			break
+		else:
+			op(matriz[i], matriz)
+		i = i+1
+	#for list in (0,3):
+	#	for l in list:
+	#		if(list > index):
+	#			op(list)
 
 
 def prepararaux(renglon):
@@ -523,14 +577,20 @@ def prepararaux(renglon):
 	elif(renglon[0] == 'syscall'):
 		renglon[0] = '14'
 		return renglon
+	elif(renglon[0] == '.asciiz'):
+		renglon[0] = '15'
+		return renglon
 	else:
-		salirVM(5)
+		return renglon
 
 #Mé
 def preparar(matriz):
 	i = 0
 	while(i < len(matriz)):
+		if(matriz[0][0] != ".text"):
+			salirVM(9)
 		matriz[i] = prepararaux(matriz[i])
+		print matriz[i]
 		i = i+1
 	return matriz
 
@@ -569,8 +629,8 @@ def corres(direccion):
 resultado = lecturaArchivo(nomArchivo)
 resultado1 = preparar(resultado)
 ejecutar(resultado1)
-print "El resultado es " , mem[1]
 print "Tardo en ciclos ", pc
+
 
 
 

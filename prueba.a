@@ -1,4 +1,12 @@
-
-li $r3, 6
+.text
+.asciiz hola mundo hola
+;li $r3, -6
 li $r4, 7
+;b baba
+li $a1, hola
+li $a0, 7
+syscall
+baba:
 add $r1, $r3, $r4
+babo:
+sub $r1, $r1, $r3
