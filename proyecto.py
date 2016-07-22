@@ -123,24 +123,34 @@ def salirVM(num):
 
 	if num == 0 :
 		print "Ejecución completada exitosamente"
+		sys.exit()
 	elif num == 1:
 		print "División entre cero"
+		sys.exit()
 	elif num == 2:
 		print "Dirección de memoria invalida"
+		sys.exit()
 	elif num == 3:
 		print "La memoria se agotó"
+		sys.exit()
 	elif num == 4:
 		print "Número de registro inválido"
+		sys.exit()
 	elif num == 5:
 		print "Operación inválida"
+		sys.exit()
 	elif num == 6:
 		print "Llamada al sistema inválido"
+		sys.exit()
 	elif num == 7:
 		print "Error al cargar el archivo"
+		sys.exit()
 	elif num == 8:
 		print "Argumentos inválidos"
+		sys.exit()
 	else:
 		print "error al salir"
+		sys.exit()
 
 #lee la posicion de  de el un arreglo 
 # aplica la opcion que se
@@ -253,25 +263,25 @@ def op(array, matrizCompleta):
 		c = int(array[3])
 		mem[a] = mem[b] + mem[c]
 		pc = pc + 3
-	elif(array[0] == 'sub'):
+	elif(array[0] == '1'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
 		r[a] = r[b] - r[c]
 		pc = pc + 4
-	elif(array[0] == 'mul'):
+	elif(array[0] == '2'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
 		r[a] = r[b] * r[c]
 		pc = pc + 10
-	elif(array[0] == 'div'):
+	elif(array[0] == '3'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
 		r[a] = r[b] / r[c]
 		pc = pc + 11
-	elif(r[0] == 'fadd'):
+	elif(array[0] == '4'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
@@ -280,7 +290,7 @@ def op(array, matrizCompleta):
 		float(r[c])
 		r[a] = r[b] + r[c]
 		pc = pc + 4
-	elif(r[0] == 'fsub'):
+	elif(array[0] == '5'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
@@ -289,7 +299,7 @@ def op(array, matrizCompleta):
 		float(r[c])
 		r[a] = r[b] - r[c]
 		pc = pc + 5
-	elif(array[0] == 'fmul'):
+	elif(array[0] == '6'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
@@ -298,7 +308,7 @@ def op(array, matrizCompleta):
 		float(r[c])
 		r[a] = r[b] * r[c]
 		pc = pc + 9
-	elif(array[0] == 'fdiv'):
+	elif(array[0] == '7'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
@@ -307,25 +317,45 @@ def op(array, matrizCompleta):
 		float(r[c])
 		r[a] = r[b] / r[c]
 		pc = pc + 10
-	elif(array[0] == 'and'):
+	elif(array[0] == '8'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
 		r[a] = r[b] and r[c]
 		pc = pc + 1
-	elif(array[0] == 'or'):
+	elif(array[0] == '9'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
 		r[a] = r[b] or r[c]
 		pc = pc + 1
-	elif(array[0] == 'xor'):
+	elif(array[0] == 'A'):
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		c = int(quitaCaract(array[3]))
 		r[a] = (r[b] and r[c]) or (not(r[b]) and not(r[3]))
 		pc = pc + 1
-	elif(array[0] == 'not'):
+	elif(array[0] == 'B'):
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		r[a] = not(r[b])
+		pc = pc + 1
+	elif(array[0] == 'C'):#no terminada
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		r[a] = not(r[b])
+		pc = pc + 1
+	elif(array[0] == 'D'):#no terminada
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		r[a] = not(r[b])
+		pc = pc + 1
+	elif(array[0] == 'E'):#no terminada
+		a = int(quitaCaract(array[1]))
+		b = int(quitaCaract(array[2]))
+		r[a] = not(r[b])
+		pc = pc + 1
+	elif(array[0] == 'F'):#no terminada
 		a = int(quitaCaract(array[1]))
 		b = int(quitaCaract(array[2]))
 		r[a] = not(r[b])
@@ -335,23 +365,23 @@ def op(array, matrizCompleta):
 		mem[a] = int(array[2]) #<< 16
 		#r[a] = r[a] or array[2] #<< 32
 		pc = pc + 1500
-	elif(array[0] == 'b'):
+	elif(array[0] == '11'):
 		a = busca(array, array[1])
 		ejecuta(matrix, a)
 		pc = pc + 1
-	elif(array[0] == 'beqz'):
+	elif(array[0] == '12'):
 		a = int(quitaCaract(array[1]))
 		b = int(busca(array, array[2]))
 		if(a == 0):
 			ejecuta(matrix, b)
 		pc = pc + 4
-	elif(array[0] == 'bltz'):
+	elif(array[0] == '13'):
 		a = int(quitaCaract(array[1]))
 		b = busca(array, array[2])
 		if(a < 0):
 			ejecuta(matrix, b)
 		pc = pc + 5
-	elif(array[0] == 'syscall'):
+	elif(array[0] == '14'):
 		syscall()
 		
 #Quita los dos puntos		
@@ -387,69 +417,69 @@ def prepararaux(renglon):
 		return renglon
 	elif(renglon[0] == 'sub'):
 		renglon[0] = '1'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'mul'):
 		renglon[0] = '2'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'div'):
 		renglon[0] = '3'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'fadd'):
 		renglon[0] = '4'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'fsub'):
 		renglon[0] = '5'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'fmul'):
 		renglon[0] = '6'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'fdiv'):
 		renglon[0] = '7'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'and'):
 		renglon[0] = '8'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'or'):
 		renglon[0] = '9'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'xor'):
 		renglon[0] = 'A'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'not'):
 		renglon[0] = 'B'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
+		renglon[1] = corres(renglon[1])
+		renglon[2] = corres(renglon[2])
+		renglon[3] = corres(renglon[3])
 		return renglon
 	elif(renglon[0] == 'lb'):
 		renglon[0] = 'C'
@@ -481,31 +511,22 @@ def prepararaux(renglon):
 		return renglon
 	elif(renglon[0] == 'b'):
 		renglon[0] = '11'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
 		return renglon
 	elif(renglon[0] == 'beqz'):
 		renglon[0] = '12'
 		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
 		return renglon
 	elif(renglon[0] == 'bltz'):
 		renglon[0] = '13'
 		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
 		return renglon
 	elif(renglon[0] == 'syscall'):
 		renglon[0] = '14'
-		renglon[1] = corres[1]
-		renglon[2] = corres[2]
-		renglon[3] = corres[3]
 		return renglon
 	else:
 		salirVM(5)
 
+#Mé
 def preparar(matriz):
 	i = 0
 	while(i < len(matriz)):
@@ -513,6 +534,7 @@ def preparar(matriz):
 		i = i+1
 	return matriz
 
+#Método que encuentra el lugar correspondiente en la memoria de acuerdo a la dirección
 def corres(direccion):
 	a = quitaCaract(direccion)
 	if(a == 'r0'):
